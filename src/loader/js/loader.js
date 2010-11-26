@@ -392,6 +392,18 @@ Y.Loader = function(o) {
     self.filters = {};
 
     /**
+     * Full comboBase query string compression. 
+     * This ignores the maxURLLength config 
+     * above as we'd have to do the fragmenting
+     * pre-final-filtering which would result in
+     * needless reqests.
+     * component, this overrides the filter config.
+     * @property final_filter
+     * @type function
+     */
+     // self.final_filter = {};
+
+    /**
      * The list of requested modules
      * @property required
      * @type {string: boolean}
@@ -1898,6 +1910,7 @@ Y.log('Undefined module: ' + mname + ', matched a pattern: ' +
 
         var s, len, i, m, url, fn, msg, attr, group, groupName, j, frag,
             comboSource, comboSources, mods, combining, urls, comboBase,
+            full_url, filtered_base,
             // provided,
             self = this,
             type = this.loadType,
@@ -1974,10 +1987,14 @@ Y.log('Undefined module: ' + mname + ', matched a pattern: ' +
 
                             frag = (m.root || this.root) + m.path;
 
-                            if ((url !== j) && (i < (len - 1)) &&
-                            ((frag.length + url.length) > this.maxURLLength)) {
-                                urls.push(this._filter(url));
-                                url = j;
+                            // Don't split URLs up when we are applying full URL
+                            // filters
+                            if(!this.final_filter) {
+                                if ((url !== j) && (i < (len - 1)) &&
+                                ((frag.length + url.length) > this.maxURLLength)) {
+                                    urls.push(this._filter(url));
+                                    url = j;
+                                }
                             }
 
                             url += frag;
@@ -1991,7 +2008,20 @@ Y.log('Undefined module: ' + mname + ', matched a pattern: ' +
                     }
 
                     if (combining.length && (url != j)) {
-                        urls.push(this._filter(url));
+                        
+                        full_url = this._filter(url);
+
+                        if(this.final_filter) {
+
+                            // Need this so we can get length post-filter
+                            filtered_base = this._filter(j);
+
+                            // We're only applying final_filter to everything *but* combobase,
+                            // so we remove the base, apply filter, and then add it back.
+                            full_url = filtered_base + this.final_filter(full_url.substr(filtered_base.length));
+                        }
+
+                        urls.push(full_url);
                     }
                 }
             }
