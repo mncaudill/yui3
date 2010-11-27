@@ -392,12 +392,11 @@ Y.Loader = function(o) {
     self.filters = {};
 
     /**
-     * Full comboBase query string compression. 
+     * Full comboBase query string filtering.
      * This ignores the maxURLLength config 
      * above as we'd have to do the fragmenting
-     * pre-final-filtering which would result in
+     * pre-final filtering which would result in
      * needless reqests.
-     * component, this overrides the filter config.
      * @property final_filter
      * @type function
      */
