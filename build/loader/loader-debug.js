@@ -13,7 +13,7 @@ if (!YUI.Env[Y.version]) {
             BUILD = '/build/',
             ROOT = VERSION + BUILD,
             CDN_BASE = Y.Env.base,
-            GALLERY_VERSION = 'gallery-2010.11.03-19-46',
+            GALLERY_VERSION = 'gallery-2010.12.01-21-32',
             TNT = '2in3',
             TNT_VERSION = '4',
             YUI2_VERSION = '2.8.2',
@@ -2830,7 +2830,6 @@ YUI.Env[Y.version].modules = YUI.Env[Y.version].modules || {
                 "requires": [
                     "recordset-base", 
                     "widget", 
-                    "intl", 
                     "substitute", 
                     "event-mouseenter"
                 ], 
@@ -2850,6 +2849,9 @@ YUI.Env[Y.version].modules = YUI.Env[Y.version].modules || {
                 ]
             }, 
             "datatable-sort": {
+                "lang": [
+                    "en"
+                ], 
                 "requires": [
                     "datatable-base", 
                     "plugin", 
@@ -3073,24 +3075,23 @@ YUI.Env[Y.version].modules = YUI.Env[Y.version].modules || {
             "dom-style-ie": {
                 "condition": {
                     "test": function (Y) {
-    var addFeature = Y.Features.add,
-        testFeature = Y.Features.test;
+
+    var testFeature = Y.Features.test,
+        addFeature = Y.Features.add,
+        WINDOW = Y.config.win,
+        DOCUMENT = Y.config.doc,
+        DOCUMENT_ELEMENT = 'documentElement',
+        ret = false;
 
     addFeature('style', 'computedStyle', {
         test: function() {
-            return 'getComputedStyle' in Y.config.win;
+            return WINDOW && 'getComputedStyle' in WINDOW;
         }
     });
 
     addFeature('style', 'opacity', {
         test: function() {
-            return 'opacity' in Y.config.doc.documentElement.style;
-        }
-    });
-
-    addFeature('style', 'filter', {
-        test: function() {
-            return 'filters' in Y.config.doc.documentElement;
+            return DOCUMENT && 'opacity' in DOCUMENT[DOCUMENT_ELEMENT].style;
         }
     });
 
@@ -4034,7 +4035,7 @@ YUI.Env[Y.version].modules = YUI.Env[Y.version].modules || {
         }
     }
 };
-YUI.Env[Y.version].md5 = '698dc5e85804e62ce00fff4dd1a3988d';
+YUI.Env[Y.version].md5 = '78eff3ff567e9302ae93ebed1ef15a88';
 
 
 }, '@VERSION@' ,{requires:['loader-base']});

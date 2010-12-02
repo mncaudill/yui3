@@ -2093,9 +2093,7 @@ Queue.prototype = {
      * @return {object} this queue.
      */
     add: function() {
-        Y.Array.each(Y.Array(arguments, 0, true), function(fn) {
-            this._q.push(fn);
-        }, this);
+        this._q.push.apply(this._q, arguments);
 
         return this;
     },
@@ -2114,6 +2112,7 @@ Queue.prototype = {
 Y.Queue = Queue;
 
 YUI.Env._loaderQueue = YUI.Env._loaderQueue || new Queue();
+
 /**
  * The YUI module contains the components required for building the YUI
  * seed file.  This includes the script loading mechanism, a simple queue,

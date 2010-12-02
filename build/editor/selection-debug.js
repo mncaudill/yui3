@@ -176,8 +176,8 @@ YUI.add('selection', function(Y) {
                 s.fontSize = '0';
                 s.marginTop = '5px';
                 s.marginBottom = '5px';
-                s.marginLeft = '15px';
-                s.marginRight = '15px';
+                s.marginLeft = '0px';
+                s.marginRight = '0px';
                 s.padding = '0';
         });
         
@@ -495,7 +495,7 @@ YUI.add('selection', function(Y) {
     * @static
     * @property CURSOR
     */
-    Y.Selection.CURSOR = '<span id="' + Y.Selection.CURID + '"><br class="yui-cursor"></span>';
+    Y.Selection.CURSOR = '<span><br class="yui-cursor"></span>';
 
     Y.Selection.hasCursor = function() {
         var cur = Y.all('#' + Y.Selection.CUR_WRAPID);
@@ -509,7 +509,7 @@ YUI.add('selection', function(Y) {
     * @method cleanCursor
     */
     Y.Selection.cleanCursor = function() {
-        Y.log('Cleaning Cursor', 'info', 'Selection');
+        //Y.log('Cleaning Cursor', 'info', 'Selection');
         var cur, sel = 'br.yui-cursor';
         cur = Y.all(sel);
         if (cur.size()) {

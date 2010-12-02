@@ -233,6 +233,7 @@ YUI.add('frame', function(Y) {
                 kfn = ((Y.UA.ie) ? Y.throttle(fn, 200) : fn);
 
             inst.Node.DOM_EVENTS.activate = 1;
+            inst.Node.DOM_EVENTS.beforedeactivate = 1;
             inst.Node.DOM_EVENTS.focusin = 1;
             inst.Node.DOM_EVENTS.deactivate = 1;
             inst.Node.DOM_EVENTS.focusout = 1;
@@ -243,7 +244,11 @@ YUI.add('frame', function(Y) {
                     if (k !== 'focus' && k !== 'blur' && k !== 'paste') {
                         //Y.log('Adding DOM event to frame: ' + k, 'info', 'frame');
                         if (k.substring(0, 3) === 'key') {
-                            inst.on(k, kfn, inst.config.doc);
+                            if (k === 'keydown') {
+                                inst.on(k, fn, inst.config.doc);
+                            } else {
+                                inst.on(k, kfn, inst.config.doc);
+                            }
                         } else {
                             inst.on(k, fn, inst.config.doc);
                         }
@@ -587,6 +592,7 @@ YUI.add('frame', function(Y) {
                 sel = new inst.Selection();
 
             if (sel.anchorNode) {
+                Y.log('_handleFocus being called..', 'info', 'frame');
                 var n = sel.anchorNode,
                     c = n.get('childNodes');
 
@@ -687,6 +693,7 @@ YUI.add('frame', function(Y) {
             keypress: 1,
             activate: 1,
             deactivate: 1,
+            beforedeactivate: 1,
             focusin: 1,
             focusout: 1
         },
